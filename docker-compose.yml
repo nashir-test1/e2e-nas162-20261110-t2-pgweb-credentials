@@ -9,7 +9,7 @@ services:
       - data:/var/lib/postgresql
     environment:
       POSTGRES_DB: pgweb
-      POSTGRES_PASSWORD: pgweb
+      POSTGRES_PASSWORD: ${PGWEB_DB_PASSWORD:?Set a run-owned PostgreSQL password}
       POSTGRES_USER: pgweb
     healthcheck:
       test: pg_isready -U pgweb -h 127.0.0.1
@@ -22,7 +22,7 @@ services:
     image: sosedoff/pgweb:latest
     build: .
     environment:
-      PGWEB_DATABASE_URL: postgres://pgweb:pgweb@pgweb-postgres:5432/pgweb?sslmode=disable
+      PGWEB_DATABASE_URL: postgres://pgweb:${PGWEB_DB_PASSWORD:?Set a run-owned PostgreSQL password}@pgweb-postgres:5432/pgweb?sslmode=disable
     ports:
       - 8081:8081
     networks:
